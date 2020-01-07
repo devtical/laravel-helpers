@@ -3,7 +3,6 @@
 namespace Kristories\Helpers\Console\Commands;
 
 use Illuminate\Console\GeneratorCommand;
-use Str;
 
 class HelperMakeCommand extends GeneratorCommand
 {
