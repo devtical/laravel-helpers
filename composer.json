@@ -1,10 +1,11 @@
 {
-  "name": "kristories/helper",
-  "description": "",
+  "name": "kristories/helpers",
+  "description": "Helper Generator for Laravel",
   "license": "MIT",
   "keywords": [
     "laravel",
-    "helper"
+    "helper",
+    "generator"
   ],
   "type": "library",
   "authors": [
