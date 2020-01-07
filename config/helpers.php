@@ -2,5 +2,6 @@
 
 return [
 
+    'directory' => 'Helpers',
 
 ];
