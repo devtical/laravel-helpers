@@ -1,3 +1,8 @@
+<?php
+
+namespace Kristories\Helpers\Console\Commands;
+
+use Illuminate\Console\GeneratorCommand;
 use Str;
 
 class HelperMakeCommand extends GeneratorCommand
@@ -22,6 +27,16 @@ class HelperMakeCommand extends GeneratorCommand
      * @var string
      */
     protected $type = 'Helper';
+
+    /**
+     * Get the stub file for the generator.
+     *
+     * @return string
+     */
+    protected function getStub()
+    {
+        return __DIR__ . '/stubs/helper.stub';
+    }
 
     /**
      * Get the default namespace for the class.
