@@ -8,6 +8,23 @@
 [![Packagist](https://poser.pugx.org/kristories/laravel-helpers/d/total.svg)](https://packagist.org/packages/kristories/laravel-helpers)
 [![Packagist](https://img.shields.io/packagist/l/kristories/laravel-helpers.svg)](https://packagist.org/packages/kristories/laravel-helpers)
 
+# Laravel Helpers
+
+Helper Generator for Laravel
+
+## Installation
+
+Install via composer
+```bash
+composer require kristories/laravel-helper
+```
+
+## Usage
+
+```bash
+php artisan make:helper <NAME>
+```
+
 ## Security
 
 If you discover any security related issues, please email `w.kristories@gmail.com` instead of using the issue tracker.
