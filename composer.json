@@ -1,0 +1,49 @@
+{
+  "name": "kristories/helper",
+  "description": "",
+  "license": "MIT",
+  "keywords": [
+    "laravel",
+    "helper"
+  ],
+  "type": "library",
+  "authors": [
+    {
+      "name": "Wahyu Kristianto",
+      "email": "w.kristories@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.2",
+    "illuminate/support": "^6.0"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^4.0",
+    "phpunit/phpunit": "^8.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Kristories\\Helper\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Kristories\\Helper\\Tests\\": "tests"
+    }
+  },
+  "scripts": {
+    "phpunit": "phpunit"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Kristories\\Helper\\ServiceProvider"
+      ]
+    }
+  },
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "optimize-autoloader": true
+  }
+}
