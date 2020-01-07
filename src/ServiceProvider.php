@@ -26,4 +26,24 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         }
     }
 
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->mergeConfigFrom(
+            self::CONFIG_PATH,
+            'helper'
+        );
+
+        $files = glob(
+            app_path(config('helpers.directory', 'Helpers') . '/*.php')
+        );
+
+        foreach ($files as $file) {
+            require_once $file;
+        }
+    }
 }
