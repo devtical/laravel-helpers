@@ -6,7 +6,7 @@ use Kristories\Helpers\Console\Commands\HelperMakeCommand;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
-    const CONFIG_PATH = __DIR__ . '/../config/helpers.php';
+    const CONFIG_PATH = __DIR__.'/../config/helpers.php';
 
     /**
      * Bootstrap the application events.
@@ -39,7 +39,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         );
 
         $files = glob(
-            app_path(config('helpers.directory', 'Helpers') . '/*.php')
+            app_path(config('helpers.directory', 'Helpers').'/*.php')
         );
 
         foreach ($files as $file) {

@@ -2,7 +2,6 @@
 
 namespace Kristories\Helpers\Tests;
 
-use Kristories\Helpers\ServiceProvider;
 use Orchestra\Testbench\TestCase;
 
 class HelpersTest extends TestCase

@@ -34,7 +34,7 @@ class HelperMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__ . '/stubs/helper.stub';
+        return __DIR__.'/stubs/helper.stub';
     }
 
     /**
@@ -45,6 +45,6 @@ class HelperMakeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\\' . config('helpers.directory', 'Helpers');
+        return $rootNamespace.'\\'.config('helpers.directory', 'Helpers');
     }
 }
