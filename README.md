@@ -1,7 +1,7 @@
 # Laravel Helpers
 
 [![Build Status](https://travis-ci.org/kristories/laravel-helpers.svg?branch=master)](https://travis-ci.org/kristories/laravel-helpers)
-[![styleci](https://styleci.io/repos/229574465/shield)](https://styleci.io/repos/229574465)
+[![styleci](https://styleci.io/repos/232460001/shield)](https://styleci.io/repos/232460001)
 [![Coverage Status](https://coveralls.io/repos/github/Kristories/laravel-helpers/badge.svg?branch=master)](https://coveralls.io/github/Kristories/laravel-helpers?branch=master)
 
 [![Packagist](https://img.shields.io/packagist/v/kristories/laravel-helpers.svg)](https://packagist.org/packages/kristories/laravel-helpers)
