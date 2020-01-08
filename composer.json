@@ -24,12 +24,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Kristories\\Helper\\": "src"
+      "Kristories\\Helpers\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Kristories\\Helper\\Tests\\": "tests"
+      "Kristories\\Helpers\\Tests\\": "tests"
     }
   },
   "scripts": {
