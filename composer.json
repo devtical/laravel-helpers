@@ -38,7 +38,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Kristories\\Helper\\ServiceProvider"
+        "Kristories\\Helpers\\ServiceProvider"
       ]
     }
   },
