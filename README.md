@@ -14,7 +14,7 @@ Helper Generator for Laravel
 
 Install via composer
 ```bash
-composer require kristories/laravel-helper
+composer require kristories/laravel-helpers
 ```
 
 #### Optional
