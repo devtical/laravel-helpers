@@ -1,5 +1,5 @@
 <p align="center">
-    <img alt="Laravel Helpers" src="https://drive.google.com/uc?id=1qRpRJcQbdtScRcSS-eFq0gZDx9F50d9W"/>
+    <img alt="Laravel Helpers" src="https://i.imgur.com/BTD33kC.png"/>
 </p>
 
 # Laravel Helpers
