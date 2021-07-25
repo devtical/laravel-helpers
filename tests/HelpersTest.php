@@ -1,12 +1,11 @@
 <?php
 
-namespace Kristories\Helpers\Tests;
-
-use Orchestra\Testbench\TestCase;
+namespace Devtical\Helpers\Tests;
 
 class HelpersTest extends TestCase
 {
-    public function testExample()
+    /** @test */
+    public function test_console_command()
     {
         $this->assertEquals(1, 1);
     }
