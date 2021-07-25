@@ -1,15 +1,4 @@
-<p align="center">
-    <img alt="Laravel Helpers" src="https://i.imgur.com/BTD33kC.png"/>
-</p>
-
 # Laravel Helpers
-
-[![Build Status](https://travis-ci.org/kristories/laravel-helpers.svg?branch=master)](https://travis-ci.org/kristories/laravel-helpers)
-[![styleci](https://styleci.io/repos/232460001/shield)](https://styleci.io/repos/232460001)
-[![Coverage Status](https://coveralls.io/repos/github/Kristories/laravel-helpers/badge.svg?branch=master)](https://coveralls.io/github/Kristories/laravel-helpers?branch=master)
-[![Packagist](https://img.shields.io/packagist/v/kristories/laravel-helpers.svg)](https://packagist.org/packages/kristories/laravel-helpers)
-[![Packagist](https://poser.pugx.org/kristories/laravel-helpers/d/total.svg)](https://packagist.org/packages/kristories/laravel-helpers)
-[![Packagist](https://img.shields.io/packagist/l/kristories/laravel-helpers.svg)](https://packagist.org/packages/kristories/laravel-helpers)
 
 Helper Generator for Laravel
 
@@ -17,7 +6,7 @@ Helper Generator for Laravel
 
 Install via composer
 ```bash
-composer require kristories/laravel-helpers
+composer require wearedevtical/laravel-helpers
 ```
 
 #### Optional
@@ -30,15 +19,29 @@ Publish the config by running the `php artisan vendor:publish` command.
 php artisan make:helper <NAME>
 ```
 
+## Change log
+
+Please see the [changelog](CHANGELOG.md) for more information on what has changed recently.
+
+## Testing
+
+``` bash
+$ composer test
+```
+
+## Contributing
+
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
 ## Security
 
-If you discover any security related issues, please email `w.kristories@gmail.com` instead of using the issue tracker.
+If you discover any security related issues, please email author instead of using the issue tracker.
 
 ## Credits
 
-- [Wahyu Kristianto](https://github.com/kristories)
-- [All contributors](https://github.com/kristories/laravel-helpers/graphs/contributors)
+- [Wahyu Kristianto](https://github.com/wearedevtical)
+- [All contributors](https://github.com/wearedevtical/laravel-helpers/graphs/contributors)
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+The MIT License (MIT). Please see the [license file](LICENSE.md) for more information.
