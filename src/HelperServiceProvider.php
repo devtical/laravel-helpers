@@ -7,7 +7,7 @@ use Illuminate\Support\ServiceProvider;
 
 class HelperServiceProvider extends ServiceProvider
 {
-    public const CONFIG_PATH = __DIR__ . '/../config/helpers.php';
+    public const CONFIG_PATH = __DIR__.'/../config/helpers.php';
 
     /**
      * Bootstrap the application events.
@@ -35,7 +35,7 @@ class HelperServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(self::CONFIG_PATH, 'helper');
-        $files = glob(app_path(config('helpers.directory', 'Helpers') . '/*.php'));
+        $files = glob(app_path(config('helpers.directory', 'Helpers').'/*.php'));
 
         foreach ($files as $file) {
             require_once $file;
