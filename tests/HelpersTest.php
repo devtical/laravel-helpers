@@ -7,6 +7,6 @@ class HelpersTest extends TestCase
     /** @test */
     public function test_console_command()
     {
-        $this->assertEquals(1, 1);
+        $this->artisan('make:helper', ['name' => 'TestHelper'])->assertExitCode(0);
     }
 }
