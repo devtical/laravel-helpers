@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-helpers` will be documented in this file.
 
+## v1.2.0 - 2022-01-30
+
+## What's Changed
+
+- Add support for Laravel 9
+
+**Full Changelog**: https://github.com/wearedevtical/laravel-helpers/compare/v1.1.1...v1.2.0
+
 ## v1.1.1 - 2022-01-11
 
 ## What's Changed
