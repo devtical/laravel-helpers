@@ -6,7 +6,7 @@ Helper Generator for Laravel
 
 Install via composer
 ```bash
-composer require wearedevtical/laravel-helpers
+composer require devtical/laravel-helpers
 ```
 
 #### Optional
