@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-helpers` will be documented in this file.
 
+## v1.2.1 - 2022-09-23
+
+`composer require devtical/laravel-helpers`
+
+**Full Changelog**: https://github.com/devtical/laravel-helpers/compare/v1.2.0...v1.2.1
+
 ## v1.2.0 - 2022-01-30
 
 ## What's Changed
