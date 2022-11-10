@@ -8,8 +8,8 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.4|^8.0",
-        "illuminate/support": "^6|^7|^8|^9"
+        "php": "^8.0",
+        "illuminate/support": "^8|^9"
     },
     "require-dev": {
         "orchestra/testbench": "^6.24|^7.0",
