@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-helpers` will be documented in this file.
 
+## v1.3.1 - 2023-01-12
+
+### What's Changed
+
+- Support Laravel 10 by @Kristories in https://github.com/devtical/laravel-helpers/pull/7
+
+**Full Changelog**: https://github.com/devtical/laravel-helpers/compare/v1.3.0...v1.3.1
+
 ## v1.3.0 - 2022-11-10
 
 **Full Changelog**: https://github.com/devtical/laravel-helpers/compare/v1.2.1...v1.3.0
