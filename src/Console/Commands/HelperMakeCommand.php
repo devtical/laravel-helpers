@@ -32,9 +32,9 @@ class HelperMakeCommand extends GeneratorCommand
      *
      * @return string
      */
-    protected function getStub(): string
+    protected function getStub()
     {
-        return base_path('stubs/helper.stub');
+        return __DIR__.'/stubs/helper.stub';
     }
 
     /**
@@ -43,8 +43,8 @@ class HelperMakeCommand extends GeneratorCommand
      * @param  string  $rootNamespace
      * @return string
      */
-    protected function getDefaultNamespace($rootNamespace): string
+    protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\\' . config('helpers.directory', 'Helpers');
+        return $rootNamespace.'\\'.config('helpers.directory', 'Helpers');
     }
 }
