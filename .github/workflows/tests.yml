@@ -9,20 +9,23 @@ on:
 
 jobs:
   run-tests:
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     
     strategy:
+      fail-fast: false
       matrix:
-        php: [8.1, 8.2, 8.3]
-        laravel: [9.*, 10.*, 11.*]
         os: [ubuntu-latest]
+        php: [8.1, 8.2, 8.3]
         include:
-          - laravel: 11.*
-            testbench: 9.*
-          - laravel: 10.*
-            testbench: 8.*
-          - laravel: 9.*
+          - php: 8.1
+            laravel: 9.*
             testbench: 7.*
+          - php: 8.2
+            laravel: 10.*
+            testbench: 8.*
+          - php: 8.3
+            laravel: 11.*
+            testbench: 9.*
 
     name: PHP ${{ matrix.php }} / Laravel ${{ matrix.laravel }}
 
