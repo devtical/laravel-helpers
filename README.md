@@ -1,5 +1,8 @@
 # Laravel Helpers
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/devtical/laravel-helpers.svg?style=flat-square)](https://packagist.org/packages/devtical/laravel-drunk-on-419)
+[![Total Downloads](https://img.shields.io/packagist/dt/devtical/laravel-helpers.svg?style=flat-square)](https://packagist.org/packages/devtical/laravel-drunk-on-419)
+
 Helper Generator for Laravel
 
 ## Installation
