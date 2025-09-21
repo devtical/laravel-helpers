@@ -17,14 +17,12 @@
         }
     ],
     "require": {
-        "php": "^7.2|^8.0",
-        "illuminate/support": "^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0 || ^12.0"
+        "php": "^8.3",
+        "illuminate/contracts": "12.*"
     },
     "require-dev": {
-        "laravel/pint": "^1.18",
-        "orchestra/testbench": "^4.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0",
-        "pestphp/pest": "^2.0",
-        "pestphp/pest-plugin-laravel": "^2.0"
+        "laravel/pint": "^1.0",
+        "pestphp/pest": "^4.0"
     },
     "autoload": {
         "psr-4": {
