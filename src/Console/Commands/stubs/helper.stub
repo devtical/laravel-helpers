@@ -1,15 +1,29 @@
 <?php
 
-if (!function_exists('myFunction')) {
+/**
+ * {{description}}
+ * 
+ * @author {{author}}
+ * @created {{date}}
+ * 
+ * This file contains helper functions that can be used throughout your Laravel application.
+ * All functions are automatically loaded and available globally.
+ */
 
+if (!function_exists('{{functionName}}')) {
     /**
-     * My function description
+     * {{description}}
      *
-     * @param
-     * @return
+     * @param mixed $value The value to process
+     * @return mixed The processed value
+     * 
+     * @example
+     * $result = {{functionName}}('hello world');
+     * // Returns: 'Hello World'
      */
-    function myFunction()
+    function {{functionName}}($value = null)
     {
-        //
+        // Add your helper function logic here
+        return $value;
     }
 }

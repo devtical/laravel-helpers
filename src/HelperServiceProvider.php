@@ -2,7 +2,9 @@
 
 namespace Devtical\Helpers;
 
+use Devtical\Helpers\Console\Commands\HelperListCommand;
 use Devtical\Helpers\Console\Commands\HelperMakeCommand;
+use Devtical\Helpers\Services\HelperManager;
 use Illuminate\Support\ServiceProvider;
 
 class HelperServiceProvider extends ServiceProvider
@@ -23,6 +25,7 @@ class HelperServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 HelperMakeCommand::class,
+                HelperListCommand::class,
             ]);
         }
     }
@@ -34,11 +37,23 @@ class HelperServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(self::CONFIG_PATH, 'helper');
-        $files = glob(app_path(config('helpers.directory', 'Helpers').'/*.php'));
+        $this->mergeConfigFrom(self::CONFIG_PATH, 'helpers');
 
-        foreach ($files as $file) {
-            require_once $file;
-        }
+        $this->app->singleton(HelperManager::class, function ($app) {
+            return new HelperManager($app);
+        });
+
+        $this->loadHelpers();
+    }
+
+    /**
+     * Load all helper files from the configured directory.
+     *
+     * @return void
+     */
+    protected function loadHelpers()
+    {
+        $helperManager = $this->app->make(HelperManager::class);
+        $helperManager->loadHelpers();
     }
 }

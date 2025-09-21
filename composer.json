@@ -1,12 +1,21 @@
 {
     "name": "devtical/laravel-helpers",
     "description": "Helper Generator for Laravel",
+    "version": "2.0.0",
     "keywords": [
+        "devtical",
         "laravel",
         "helper",
         "generator"
     ],
+    "homepage": "https://github.com/devtical/laravel-helpers",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "W Kristianto",
+            "email": "w.kristories@gmail.com"
+        }
+    ],
     "require": {
         "php": "^7.2|^8.0",
         "illuminate/support": "^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0 || ^12.0"
@@ -14,8 +23,8 @@
     "require-dev": {
         "laravel/pint": "^1.18",
         "orchestra/testbench": "^4.0 || ^6.0 || ^7.0 || ^8.0 || ^9.0",
-        "phpunit/phpunit": "^8.4 || ^9.0 || ^10.0 || ^11.0",
-        "friendsofphp/php-cs-fixer": "^3.0"
+        "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0"
     },
     "autoload": {
         "psr-4": {
@@ -43,10 +52,9 @@
         }
     },
     "scripts": {
-        "format": "vendor/bin/pint",
-        "test": "vendor/bin/pest --colors=always",
-        "analyse": "vendor/bin/phpstan analyse"
+        "test": "vendor/bin/pest --no-coverage",
+        "format": "vendor/bin/pint"
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }

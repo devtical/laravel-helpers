@@ -1,8 +1,4 @@
 # Laravel Helpers
-
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/devtical/laravel-helpers.svg?style=flat-square)](https://packagist.org/packages/devtical/laravel-drunk-on-419)
-[![Total Downloads](https://img.shields.io/packagist/dt/devtical/laravel-helpers.svg?style=flat-square)](https://packagist.org/packages/devtical/laravel-drunk-on-419)
-
 Helper Generator for Laravel
 
 ## Installation
@@ -16,13 +12,36 @@ composer require devtical/laravel-helpers
 
 Publish the config by running the `php artisan vendor:publish` command.
 
+Configure your helper directory:
+```bash
+# In your .env file
+HELPER_DIRECTORY=Helpers
+```
+
 ## Usage
 
+Create your first helper file:
 ```bash
 php artisan make:helper <NAME>
 ```
+Add your helper functions:
+```php
+<?php
 
-## Change log
+if (!function_exists('str_slug')) {
+    function str_slug($text, $separator = '-')
+    {
+        return Str::slug($text, $separator);
+    }
+}
+```
+
+Use your helper functions anywhere:
+```php
+// In your controllers, models, views, etc.
+$slug = str_slug('Hello World'); // Returns: hello-world
+```
+
 
 Please see the [changelog](CHANGELOG.md) for more information on what has changed recently.
 
@@ -42,9 +61,13 @@ If you discover any security related issues, please email author instead of usin
 
 ## Credits
 
-- [Wahyu Kristianto](https://github.com/wearedevtical)
-- [All contributors](https://github.com/wearedevtical/laravel-helpers/graphs/contributors)
+- [Wahyu Kristianto](https://github.com/kristories)
+- [All contributors](https://github.com/devtical/laravel-helpers/graphs/contributors)
 
 ## License
 
-The MIT License (MIT). Please see the [license file](LICENSE.md) for more information.
+This package is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Support
+
+If you have any questions or need help, please open an issue on GitHub.
