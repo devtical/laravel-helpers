@@ -310,17 +310,6 @@ class HelperMakeCommand extends GeneratorCommand
     }
 
     /**
-     * Check if the name is valid (legacy method for backward compatibility).
-     *
-     * @param  string  $name
-     * @return bool
-     */
-    protected function isValidName($name)
-    {
-        return preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $name);
-    }
-
-    /**
      * Get the desired class name from the input.
      *
      * @return string

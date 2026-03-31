@@ -26,13 +26,11 @@ class HelperListCommand extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $helperManager = app()->make(HelperManager::class);
-        $directory = app_path(config('helpers.directory', 'Helpers'));
+        $directory = $helperManager->getHelperDirectoryPath();
 
         if (! File::exists($directory)) {
             $this->warn("Helper directory does not exist: {$directory}");
@@ -41,7 +39,7 @@ class HelperListCommand extends Command
             return 0;
         }
 
-        $files = $this->getHelperFiles($directory);
+        $files = $helperManager->discoverHelperFiles();
 
         if (empty($files)) {
             $this->warn('No helper files found.');
@@ -57,11 +55,7 @@ class HelperListCommand extends Command
         $rows = [];
 
         foreach ($files as $file) {
-            // Get relative path from helpers directory
-            $helperDir = app_path(config('helpers.directory', 'Helpers'));
-            $relativePath = str_replace($helperDir.'/', '', $file);
-            $filename = $relativePath;
-
+            $filename = $helperManager->getRelativeHelperPath($file);
             $status = $helperManager->isLoaded($file) ? 'Loaded' : 'Not Loaded';
 
             if ($this->option('loaded') && $status !== 'Loaded') {
@@ -71,10 +65,7 @@ class HelperListCommand extends Command
             $rows[] = [$filename, $status];
         }
 
-        // Sort rows by filename
-        usort($rows, function ($a, $b) {
-            return strcmp($a[0], $b[0]);
-        });
+        usort($rows, fn ($a, $b) => strcmp($a[0], $b[0]));
 
         $this->table($headers, $rows);
 
@@ -86,55 +77,20 @@ class HelperListCommand extends Command
     }
 
     /**
-     * Get all helper files from the directory (including subdirectories).
-     *
-     * @param  string  $directory
-     * @return array
+     * @param  list<string>  $files
      */
-    protected function getHelperFiles($directory)
-    {
-        $files = [];
-
-        if (! File::exists($directory)) {
-            return $files;
-        }
-
-        // Use recursive directory iterator for better subdirectory support
-        $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS)
-        );
-
-        foreach ($iterator as $file) {
-            if ($file->isFile() && $file->getExtension() === 'php') {
-                $files[] = $file->getPathname();
-            }
-        }
-
-        return $files;
-    }
-
-    /**
-     * Show detailed information about helper files.
-     *
-     * @param  array  $files
-     * @param  HelperManager  $helperManager
-     * @return void
-     */
-    protected function showDetails($files, $helperManager)
+    protected function showDetails(array $files, HelperManager $helperManager): void
     {
         $this->newLine();
         $this->info('Detailed Information:');
         $this->newLine();
 
         foreach ($files as $file) {
-            // Get relative path from helpers directory
-            $helperDir = app_path(config('helpers.directory', 'Helpers'));
-            $relativePath = str_replace($helperDir.'/', '', $file);
+            $relativePath = $helperManager->getRelativeHelperPath($file);
 
             $this->line("<fg=cyan>{$relativePath}</>");
             $this->line('  Status: '.($helperManager->isLoaded($file) ? 'Loaded' : 'Not Loaded'));
 
-            // Try to extract function names from the file
             $content = File::get($file);
             $functions = $this->extractFunctionNames($content);
 
@@ -147,12 +103,9 @@ class HelperListCommand extends Command
     }
 
     /**
-     * Extract function names from file content.
-     *
-     * @param  string  $content
-     * @return array
+     * @return list<string>
      */
-    protected function extractFunctionNames($content)
+    protected function extractFunctionNames(string $content): array
     {
         preg_match_all('/function\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/', $content, $matches);
 

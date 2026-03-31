@@ -4,39 +4,24 @@ namespace Devtical\Helpers\Services;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\File;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 class HelperManager
 {
     /**
-     * The application instance.
-     *
-     * @var Application
+     * @var list<string>
      */
-    protected $app;
+    protected array $loadedFiles = [];
 
-    /**
-     * The loaded helper files.
-     *
-     * @var array
-     */
-    protected $loadedFiles = [];
-
-    /**
-     * Create a new HelperManager instance.
-     */
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
+    public function __construct(protected Application $app) {}
 
     /**
      * Load all helper files from the configured directory.
-     *
-     * @return void
      */
-    public function loadHelpers()
+    public function loadHelpers(): void
     {
-        $directory = $this->getHelperDirectory();
+        $directory = $this->getHelperDirectoryPath();
 
         if (! File::exists($directory)) {
             $this->createHelperDirectory($directory);
@@ -44,19 +29,15 @@ class HelperManager
             return;
         }
 
-        $files = $this->getHelperFiles($directory);
-
-        foreach ($files as $file) {
+        foreach ($this->collectPhpFilesInDirectory($directory) as $file) {
             $this->loadHelperFile($file);
         }
     }
 
     /**
-     * Get the helper directory path.
-     *
-     * @return string
+     * Absolute path to the configured helpers directory (under app_path).
      */
-    protected function getHelperDirectory()
+    public function getHelperDirectoryPath(): string
     {
         $directory = config('helpers.directory', 'Helpers');
 
@@ -64,23 +45,48 @@ class HelperManager
     }
 
     /**
-     * Create the helper directory if it doesn't exist.
+     * All .php files under the helpers directory (recursive), or empty if missing.
      *
-     * @param  string  $directory
-     * @return void
+     * @return list<string>
      */
-    protected function createHelperDirectory($directory)
+    public function discoverHelperFiles(): array
+    {
+        $directory = $this->getHelperDirectoryPath();
+
+        if (! File::exists($directory)) {
+            return [];
+        }
+
+        return $this->collectPhpFilesInDirectory($directory);
+    }
+
+    /**
+     * Path relative to the helpers directory, using forward slashes for display.
+     */
+    public function getRelativeHelperPath(string $absoluteFilePath): string
+    {
+        $dir = str_replace('\\', '/', rtrim($this->getHelperDirectoryPath(), '/\\'));
+        $file = str_replace('\\', '/', $absoluteFilePath);
+
+        if (str_starts_with($file, $dir.'/')) {
+            return substr($file, strlen($dir) + 1);
+        }
+
+        return $file;
+    }
+
+    /**
+     * Create the helper directory if it doesn't exist.
+     */
+    protected function createHelperDirectory(string $directory): void
     {
         File::makeDirectory($directory, 0755, true);
     }
 
     /**
-     * Get all PHP files from the helper directory (including subdirectories).
-     *
-     * @param  string  $directory
-     * @return array
+     * @return list<string>
      */
-    protected function getHelperFiles($directory)
+    protected function collectPhpFilesInDirectory(string $directory): array
     {
         $files = [];
 
@@ -88,9 +94,8 @@ class HelperManager
             return $files;
         }
 
-        // Use recursive directory iterator for better subdirectory support
-        $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS)
+        $iterator = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($directory, RecursiveDirectoryIterator::SKIP_DOTS)
         );
 
         foreach ($iterator as $file) {
@@ -104,58 +109,39 @@ class HelperManager
 
     /**
      * Load a single helper file.
-     *
-     * @param  string  $file
-     * @return void
      */
-    protected function loadHelperFile($file)
+    protected function loadHelperFile(string $file): void
     {
-        if (in_array($file, $this->loadedFiles)) {
+        if (in_array($file, $this->loadedFiles, true)) {
             return;
         }
 
         try {
             require_once $file;
             $this->loadedFiles[] = $file;
-        } catch (\ParseError $e) {
-            // Skip files with parse errors
+        } catch (\ParseError) {
             return;
-        } catch (\Error $e) {
-            // Skip files with fatal errors
+        } catch (\Error) {
             return;
-        } catch (\Exception $e) {
-            // Skip files with exceptions
+        } catch (\Exception) {
             return;
         }
     }
 
     /**
-     * Get all loaded helper files.
-     *
-     * @return array
+     * @return list<string>
      */
-    public function getLoadedFiles()
+    public function getLoadedFiles(): array
     {
         return $this->loadedFiles;
     }
 
-    /**
-     * Check if a helper file is loaded.
-     *
-     * @param  string  $file
-     * @return bool
-     */
-    public function isLoaded($file)
+    public function isLoaded(string $file): bool
     {
-        return in_array($file, $this->loadedFiles);
+        return in_array($file, $this->loadedFiles, true);
     }
 
-    /**
-     * Reload all helper files.
-     *
-     * @return void
-     */
-    public function reload()
+    public function reload(): void
     {
         $this->loadedFiles = [];
         $this->loadHelpers();
