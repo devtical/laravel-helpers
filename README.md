@@ -1,9 +1,11 @@
 # Laravel Helpers
+
 Helper Generator for Laravel
 
 ## Installation
 
 Install via composer
+
 ```bash
 composer require devtical/laravel-helpers
 ```
@@ -13,6 +15,7 @@ composer require devtical/laravel-helpers
 Publish the config by running the `php artisan vendor:publish` command.
 
 Configure your helper directory:
+
 ```bash
 # In your .env file
 HELPER_DIRECTORY=Helpers
@@ -21,10 +24,13 @@ HELPER_DIRECTORY=Helpers
 ## Usage
 
 Create your first helper file:
+
 ```bash
 php artisan make:helper <NAME>
 ```
+
 Add your helper functions:
+
 ```php
 <?php
 
@@ -37,17 +43,17 @@ if (!function_exists('str_slug')) {
 ```
 
 Use your helper functions anywhere:
+
 ```php
 // In your controllers, models, views, etc.
 $slug = str_slug('Hello World'); // Returns: hello-world
 ```
 
-
 Please see the [changelog](CHANGELOG.md) for more information on what has changed recently.
 
 ## Testing
 
-``` bash
+```bash
 $ composer test
 ```
 
@@ -61,7 +67,7 @@ If you discover any security related issues, please email author instead of usin
 
 ## Credits
 
-- [Wahyu Kristianto](https://github.com/kristories)
+- [W Kristianto](https://github.com/kristories)
 - [All contributors](https://github.com/devtical/laravel-helpers/graphs/contributors)
 
 ## License
