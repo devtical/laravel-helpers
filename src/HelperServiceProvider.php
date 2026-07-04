@@ -4,56 +4,43 @@ namespace Devtical\Helpers;
 
 use Devtical\Helpers\Console\Commands\HelperListCommand;
 use Devtical\Helpers\Console\Commands\HelperMakeCommand;
+use Devtical\Helpers\Console\Commands\HelperReloadCommand;
+use Devtical\Helpers\Console\Commands\HelperValidateCommand;
 use Devtical\Helpers\Services\HelperManager;
-use Illuminate\Support\ServiceProvider;
+use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class HelperServiceProvider extends ServiceProvider
+class HelperServiceProvider extends PackageServiceProvider
 {
-    public const CONFIG_PATH = __DIR__.'/../config/helpers.php';
-
-    /**
-     * Bootstrap the application events.
-     *
-     * @return void
-     */
-    public function boot()
+    public function configurePackage(Package $package): void
     {
-        $this->publishes([
-            self::CONFIG_PATH => config_path('helpers.php'),
-        ], 'config');
-
-        if ($this->app->runningInConsole()) {
-            $this->commands([
+        $package
+            ->name('laravel-helpers')
+            ->hasCommands([
                 HelperMakeCommand::class,
                 HelperListCommand::class,
+                HelperValidateCommand::class,
+                HelperReloadCommand::class,
             ]);
-        }
     }
 
-    /**
-     * Register the service provider.
-     *
-     * @return void
-     */
-    public function register()
+    public function packageRegistered(): void
     {
-        $this->mergeConfigFrom(self::CONFIG_PATH, 'helpers');
+        $this->mergeConfigFrom(__DIR__.'/../config/helpers.php', 'helpers');
 
         $this->app->singleton(HelperManager::class, function ($app) {
             return new HelperManager($app);
         });
 
-        $this->loadHelpers();
+        $this->app->make(HelperManager::class)->loadHelpers();
     }
 
-    /**
-     * Load all helper files from the configured directory.
-     *
-     * @return void
-     */
-    protected function loadHelpers()
+    public function packageBooted(): void
     {
-        $helperManager = $this->app->make(HelperManager::class);
-        $helperManager->loadHelpers();
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__.'/../config/helpers.php' => config_path('helpers.php'),
+            ], 'helpers-config');
+        }
     }
 }

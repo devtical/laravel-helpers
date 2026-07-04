@@ -4,8 +4,10 @@ namespace Devtical\Helpers\Services;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use Throwable;
 
 class HelperManager
 {
@@ -13,6 +15,11 @@ class HelperManager
      * @var list<string>
      */
     protected array $loadedFiles = [];
+
+    /**
+     * @var array<string, Throwable>
+     */
+    protected array $failedFiles = [];
 
     public function __construct(protected Application $app) {}
 
@@ -119,12 +126,24 @@ class HelperManager
         try {
             require_once $file;
             $this->loadedFiles[] = $file;
-        } catch (\ParseError) {
-            return;
-        } catch (\Error) {
-            return;
-        } catch (\Exception) {
-            return;
+        } catch (Throwable $exception) {
+            $this->recordLoadFailure($file, $exception);
+        }
+    }
+
+    protected function recordLoadFailure(string $file, Throwable $exception): void
+    {
+        $this->failedFiles[$file] = $exception;
+
+        if (config('helpers.log_errors', true)) {
+            Log::warning('Failed to load helper file.', [
+                'file' => $file,
+                'message' => $exception->getMessage(),
+            ]);
+        }
+
+        if (config('helpers.strict', false)) {
+            throw $exception;
         }
     }
 
@@ -136,14 +155,33 @@ class HelperManager
         return $this->loadedFiles;
     }
 
+    /**
+     * @return array<string, Throwable>
+     */
+    public function getFailedFiles(): array
+    {
+        return $this->failedFiles;
+    }
+
+    public function hasFailures(): bool
+    {
+        return $this->failedFiles !== [];
+    }
+
     public function isLoaded(string $file): bool
     {
         return in_array($file, $this->loadedFiles, true);
     }
 
+    public function isFailed(string $file): bool
+    {
+        return array_key_exists($file, $this->failedFiles);
+    }
+
     public function reload(): void
     {
         $this->loadedFiles = [];
+        $this->failedFiles = [];
         $this->loadHelpers();
     }
 }
