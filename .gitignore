@@ -5,4 +5,5 @@ vendor
 tests/Integration/temp
 .phpunit.result.cache
 .php-cs-fixer.cache
+.phpunit.cache
 tests/temp/database.sqlite
