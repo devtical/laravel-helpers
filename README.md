@@ -12,13 +12,19 @@ composer require devtical/laravel-helpers
 
 #### Optional
 
-Publish the config by running the `php artisan vendor:publish` command.
+Publish the config:
+
+```bash
+php artisan vendor:publish --tag=helpers-config
+```
 
 Configure your helper directory:
 
 ```bash
 # In your .env file
 HELPER_DIRECTORY=Helpers
+HELPER_LOG_ERRORS=true
+HELPER_STRICT=false
 ```
 
 ## Usage
@@ -34,7 +40,9 @@ Add your helper functions:
 ```php
 <?php
 
-if (!function_exists('str_slug')) {
+declare(strict_types=1);
+
+if (! function_exists('str_slug')) {
     function str_slug($text, $separator = '-')
     {
         return Str::slug($text, $separator);
@@ -48,6 +56,15 @@ Use your helper functions anywhere:
 // In your controllers, models, views, etc.
 $slug = str_slug('Hello World'); // Returns: hello-world
 ```
+
+## Commands
+
+| Command           | Description                                                  |
+| ----------------- | ------------------------------------------------------------ |
+| `make:helper`     | Create a new helper file                                     |
+| `helper:list`     | List all helper files and their load status                  |
+| `helper:validate` | Check helper files for syntax errors and duplicate functions |
+| `helper:reload`   | Reload helper files (useful during development)              |
 
 Please see the [changelog](CHANGELOG.md) for more information on what has changed recently.
 
