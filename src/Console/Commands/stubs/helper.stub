@@ -1,29 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * {{description}}
- * 
+ *
  * @author {{author}}
  * @created {{date}}
- * 
- * This file contains helper functions that can be used throughout your Laravel application.
- * All functions are automatically loaded and available globally.
  */
 
-if (!function_exists('{{functionName}}')) {
+if (! function_exists('{{functionName}}')) {
     /**
      * {{description}}
      *
-     * @param mixed $value The value to process
-     * @return mixed The processed value
-     * 
-     * @example
-     * $result = {{functionName}}('hello world');
-     * // Returns: 'Hello World'
+     * @param  mixed  $value
+     * @return mixed
      */
     function {{functionName}}($value = null)
     {
-        // Add your helper function logic here
         return $value;
     }
 }
