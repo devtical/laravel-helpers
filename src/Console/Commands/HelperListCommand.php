@@ -2,31 +2,28 @@
 
 namespace Devtical\Helpers\Console\Commands;
 
+use Devtical\Helpers\Concerns\InteractsWithHelperFiles;
 use Devtical\Helpers\Services\HelperManager;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
 class HelperListCommand extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'helper:list 
-                            {--loaded : Show only loaded helper files}
-                            {--details : Show detailed information about each file}';
+    use InteractsWithHelperFiles;
 
     /**
-     * The console command description.
-     *
+     * @var string
+     */
+    protected $signature = 'helper:list
+                            {--loaded : Show only loaded helper files}
+                            {--details : Show detailed information about each file}
+                            {--json : Output the list as JSON}';
+
+    /**
      * @var string
      */
     protected $description = 'List all available helper files';
 
-    /**
-     * Execute the console command.
-     */
     public function handle(): int
     {
         $helperManager = app()->make(HelperManager::class);
@@ -36,79 +33,114 @@ class HelperListCommand extends Command
             $this->warn("Helper directory does not exist: {$directory}");
             $this->info('Run "php artisan make:helper example" to create your first helper file.');
 
-            return 0;
+            return self::SUCCESS;
         }
 
         $files = $helperManager->discoverHelperFiles();
 
-        if (empty($files)) {
+        if ($files === []) {
             $this->warn('No helper files found.');
             $this->info('Run "php artisan make:helper example" to create your first helper file.');
 
-            return 0;
+            return self::SUCCESS;
+        }
+
+        $items = $this->buildListItems($files, $helperManager);
+
+        if ($this->option('json')) {
+            $this->line(json_encode($items, JSON_PRETTY_PRINT));
+
+            return self::SUCCESS;
         }
 
         $this->info('Found '.count($files).' helper file(s):');
         $this->newLine();
 
-        $headers = ['File', 'Status'];
-        $rows = [];
+        $rows = array_map(fn (array $item) => [
+            $item['file'],
+            (string) $item['functions'],
+            $item['status'],
+        ], $items);
+
+        $this->table(['File', 'Functions', 'Status'], $rows);
+
+        if ($this->option('details')) {
+            $this->showDetails($items);
+        }
+
+        return self::SUCCESS;
+    }
+
+    /**
+     * @param  list<string>  $files
+     * @return list<array{file: string, functions: int, status: string, function_names: list<string>, error: string|null}>
+     */
+    protected function buildListItems(array $files, HelperManager $helperManager): array
+    {
+        $items = [];
 
         foreach ($files as $file) {
-            $filename = $helperManager->getRelativeHelperPath($file);
-            $status = $helperManager->isLoaded($file) ? 'Loaded' : 'Not Loaded';
+            $relativePath = $helperManager->getRelativeHelperPath($file);
+            $content = (string) File::get($file);
+            $functionNames = $this->extractFunctionNames($content);
+            $status = $this->resolveStatus($file, $helperManager);
+            $error = $helperManager->isFailed($file)
+                ? $helperManager->getFailedFiles()[$file]->getMessage()
+                : null;
 
             if ($this->option('loaded') && $status !== 'Loaded') {
                 continue;
             }
 
-            $rows[] = [$filename, $status];
+            $items[] = [
+                'file' => $relativePath,
+                'functions' => count($functionNames),
+                'status' => $status,
+                'function_names' => $functionNames,
+                'error' => $error,
+            ];
         }
 
-        usort($rows, fn ($a, $b) => strcmp($a[0], $b[0]));
+        usort($items, fn (array $a, array $b) => strcmp($a['file'], $b['file']));
 
-        $this->table($headers, $rows);
+        return $items;
+    }
 
-        if ($this->option('details')) {
-            $this->showDetails($files, $helperManager);
+    protected function resolveStatus(string $file, HelperManager $helperManager): string
+    {
+        if ($helperManager->isFailed($file)) {
+            return 'Failed';
         }
 
-        return 0;
+        if ($helperManager->isLoaded($file)) {
+            return 'Loaded';
+        }
+
+        return 'Not Loaded';
     }
 
     /**
-     * @param  list<string>  $files
+     * @param  list<array{file: string, functions: int, status: string, function_names: list<string>, error: string|null}>  $items
      */
-    protected function showDetails(array $files, HelperManager $helperManager): void
+    protected function showDetails(array $items): void
     {
         $this->newLine();
         $this->info('Detailed Information:');
         $this->newLine();
 
-        foreach ($files as $file) {
-            $relativePath = $helperManager->getRelativeHelperPath($file);
+        foreach ($items as $item) {
+            $this->line("<fg=cyan>{$item['file']}</>");
+            $this->line('  Status: '.$item['status']);
 
-            $this->line("<fg=cyan>{$relativePath}</>");
-            $this->line('  Status: '.($helperManager->isLoaded($file) ? 'Loaded' : 'Not Loaded'));
+            if ($item['error'] !== null) {
+                $this->line('  Error: '.$item['error']);
+            }
 
-            $content = File::get($file);
-            $functions = $this->extractFunctionNames($content);
-
-            if (! empty($functions)) {
-                $this->line('  Functions: '.implode(', ', $functions));
+            if ($item['function_names'] !== []) {
+                $this->line('  Functions: '.implode(', ', $item['function_names']));
             }
 
             $this->newLine();
         }
-    }
-
-    /**
-     * @return list<string>
-     */
-    protected function extractFunctionNames(string $content): array
-    {
-        preg_match_all('/function\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/', $content, $matches);
-
-        return $matches[1] ?? [];
     }
 }
