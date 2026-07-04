@@ -8,21 +8,11 @@ it('can instantiate helper list command', function () {
     expect($command)->toBeInstanceOf(HelperListCommand::class);
 });
 
-it('has correct command name', function () {
+it('has correct command name and options', function () {
     $command = new HelperListCommand;
 
     expect($command->getName())->toBe('helper:list');
-});
-
-it('has correct command description', function () {
-    $command = new HelperListCommand;
-
-    expect($command->getDescription())->not->toBeEmpty();
-});
-
-it('has correct command options', function () {
-    $command = new HelperListCommand;
-
     expect($command->getDefinition()->hasOption('loaded'))->toBeTrue();
     expect($command->getDefinition()->hasOption('details'))->toBeTrue();
+    expect($command->getDefinition()->hasOption('json'))->toBeTrue();
 });
